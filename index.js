@@ -61,11 +61,37 @@ async function run() {
       const result = await bookingCollection.find(query).toArray()
       res.send(result)
     })
-    
+
     app.post('/bookings', async (req, res) => {
       const booking = req.body;
       console.log(booking);
       const result = await bookingCollection.insertOne(booking)
+      res.send(result)
+    })
+
+    app.patch('/bookings/:id', async(req, res) => {
+      const id = req.params.id
+      const updatedBooking = req.body
+      const filter = {_id: new ObjectId(id)}
+      console.log(updatedBooking);
+      const updateDoc = {
+
+      $set: {
+
+        status: updatedBooking.status
+
+        },
+        
+      };
+      const result = await bookingCollection.updateOne(filter, updateDoc)
+      res.send(result)
+      
+    })
+
+    app.delete('/bookings/:id', async (req, res) => {
+      const id = req.params.id
+      const query = { _id: new ObjectId(id) }
+      const result = await bookingCollection.deleteOne(query)
       res.send(result)
     })
 
