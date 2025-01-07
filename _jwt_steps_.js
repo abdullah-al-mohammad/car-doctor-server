@@ -22,4 +22,6 @@
  }))
  
  * 3. client side axios setting
+ *
+ * in axios set withCredential: true
  */
