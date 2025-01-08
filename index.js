@@ -43,7 +43,7 @@ async function run() {
     app.post('/jwt', (req, res) => {
       const user = req.body
       console.log(user);
-      
+      // generate token
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1h' })
       // set token in cookie
       res
@@ -76,8 +76,8 @@ async function run() {
 
     // bookings
     app.get('/bookings', async(req,res) => {
-      console.log(req.query.email);
-      console.log(req.cookies.token);
+      // console.log(req.query.email);
+      // console.log(req.cookies.token);
       
       let query = {}
       if(req.query?.email){
@@ -93,7 +93,7 @@ async function run() {
       const result = await bookingCollection.insertOne(booking)
       res.send(result)
     })
-
+    // update data
     app.patch('/bookings/:id', async(req, res) => {
       const id = req.params.id
       const updatedBooking = req.body
@@ -112,7 +112,7 @@ async function run() {
       res.send(result)
       
     })
-
+    // delete data
     app.delete('/bookings/:id', async (req, res) => {
       const id = req.params.id
       const query = { _id: new ObjectId(id) }
