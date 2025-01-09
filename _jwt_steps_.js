@@ -15,6 +15,7 @@
 
 /**
  * 1.set cookies with http only. for development secure: false,
+ * 
  * 2. corse
  * app.use(cors({
    origin: ['http://localhost:5173'],
