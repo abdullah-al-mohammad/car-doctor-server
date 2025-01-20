@@ -11,11 +11,16 @@ const port = process.env.PORT || 3000
 
 // middleware
 
-app.use(express.json())
 app.use(cors({
-  origin: ['http://localhost:5173'],
+  origin: [
+    // 'http://localhost:5173',
+    'https://car-doctor-bb6b3.web.app',
+    'https://car-doctor-bb6b3.firebaseapp.com/'
+
+  ],
   credentials: true
 }))
+app.use(express.json())
 app.use(cookieParser())
 
 
@@ -33,7 +38,7 @@ const client = new MongoClient(uri, {
 
 // middleWars
 const verifyToken = (req, res, next) => {
-  const token = req.cookies?.token
+  const token = req.cook
   // console.log('token in the middleware', token);
   // no token available
   if (!token) {
@@ -41,10 +46,12 @@ const verifyToken = (req, res, next) => {
   }
   // token verify
   jwt.verify('token', token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+    console.log(decoded);
+    
     if (err) {
       return res.status(401).send({message: 'unauthorized access'})
     }
-    req.user = decoded
+    req.user = decoded // Store the decoded user data in the request object
     next()
   })
   
@@ -96,7 +103,7 @@ async function run() {
 
 
     // bookings
-    app.get('/bookings', verifyToken, async(req,res) => {
+    app.get('/bookings',verifyToken, async(req,res) => {
       // console.log(req.query.email);
       // console.log('token owner info', req.user);
       if (req.user.email !== req.query.email) {
